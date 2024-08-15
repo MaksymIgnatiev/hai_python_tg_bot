@@ -1,0 +1,29 @@
+#!/bin/bash
+
+SCRIPT="main.py"
+PID=0
+
+start_script() {
+    python $SCRIPT &
+    PID=$!
+}
+
+handle_interrupt() {
+    echo "Killing last run with PID: $PID"
+    kill $PID
+    exit
+}
+
+trap 'handle_interrupt' SIGINT
+
+start_script
+
+watch_file() {
+    while inotifywait -qq -e attrib $SCRIPT; do
+		echo -e "\033[38;0;120;0mFile changed. Restarting...\033[0m"
+        kill $PID
+        start_script
+    done
+}
+
+watch_file
