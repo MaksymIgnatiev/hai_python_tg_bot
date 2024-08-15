@@ -41,8 +41,8 @@ def start_command(message):
 @bot.message_handler(commands=["game"])
 def hangman_command(message):
     game_state = start_new_game(message.from_user.id)
-    bot.send_message(message.chat.id, f"Гра почалась! Загадане слово: {game_state["h_word"]}\n"
-                                      f"У вас е {game_state["att"]} спроб. Надішліть одну літеру.")
+    bot.send_message(message.chat.id, f'Гра почалась! Загадане слово: {game_state["h_word"]}\n'
+                                      f'У вас е {game_state["att"]} спроб. Надішліть одну літеру.')
 
 @bot.message_handler(func=lambda message: message.from_user.id in games)
 def handle_guess(message):
