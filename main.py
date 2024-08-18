@@ -1,7 +1,8 @@
+# type: ignore
+from typing import Any
 import telebot
 import re
 import random 
-import json
 
 from data import TOKEN 
 from telebot import types
@@ -25,7 +26,7 @@ def start_new_game(user_id):
     return games[user_id]
 
 
-def format_message(obj: dict[str, str | int | list[str]]):
+def format_message(obj: dict[str, Any]):
     return f'Залишилось спроб: {obj["att"]}\n\nСлово:\n\n{" ".join(obj["h_word"])}\n\nВикористані літери:\n\n{" ".join(obj["letters"])}'
 
 
@@ -49,6 +50,7 @@ def start_command(msg: types.Message):
 
 @bot.message_handler(commands=["game"])
 def hangman_command(msg: types.Message):
+    if not msg.from_user: return
     if msg.from_user.id not in games:
         user = start_new_game(msg.from_user.id)
         bot.send_message(msg.chat.id, f'Гра почалась! Надішліть одну літеру.\n\nДля подробиць використовуйте команду: /help')
@@ -60,9 +62,11 @@ def hangman_command(msg: types.Message):
 
 @bot.message_handler(func=lambda msg: msg.from_user.id in games and msg.text)
 def handle_guess(msg: types.Message):
+    if not msg.from_user: return
     chatId = msg.chat.id
     userId = msg.from_user.id
     user = games[userId]
+    if not msg.text: return
     text = msg.text.lower().strip()
 
     if text in ["/stop", "/exit"]:
@@ -120,7 +124,7 @@ def handle_guess(msg: types.Message):
 
 
 @bot.message_handler(commands=["help"])
-def start_command(msg: types.Message):
+def help_command(msg: types.Message):
     bot.send_message(msg.chat.id,
                         "Допомога з боту:\n\n" + \
                         "/start - запуск/перезапуск бота\n" + \
