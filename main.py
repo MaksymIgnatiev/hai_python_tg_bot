@@ -15,6 +15,7 @@ with open("words.txt", "r") as file:
     word_list = [line.strip() for line in file]
 
 
+
 def start_new_game(user_id):
     games[user_id] = {
         "word": (word := random.choice(word_list).lower()),
@@ -38,7 +39,7 @@ def update_message(obj, chatId: int):
 @bot.message_handler(commands=["start"])
 def start_command(msg: types.Message):
     bot.send_message(msg.chat.id,
-                     "Привіт. Я телеграм бот для гри в [шибеницю](https://uk.m.wikipedia.org/wiki/%D0%A8%D0%B8%D0%B1%D0%B5%D0%BD%D0%B8%D1%86%D1%8F_(%D0%B3%D1%80%D0%B0)) написаний на [Python](https://www.python.org/) бібліотеці [telebot](https://pypi.org/project/telebot/).\n\n" + \
+                     "Привіт. Я телеграм бот для гри в [шибеницю](https://uk.m.wikipedia.org/wiki/%D0%A8%D0%B8%D0%B1%D0%B5%D0%BD%D0%B8%D1%86%D1%8F_%28%D0%B3%D1%80%D0%B0%29) написаний на [Python](https://www.python.org/) бібліотеці [telebot](https://pypi.org/project/telebot/).\n\n" + \
                              "Для подробиць використовуйте команду: /help"
                      ,
                     "Markdown",
